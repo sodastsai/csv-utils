@@ -1,0 +1,33 @@
+{
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug CSVUtils",
+      "program": "${workspaceFolder:csv-utils}/.build/debug/CSVUtils",
+      "args": [],
+      "cwd": "${workspaceFolder:csv-utils}",
+      "preLaunchTask": "swift: Build Debug CSVUtils"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Release CSVUtils",
+      "program": "${workspaceFolder:csv-utils}/.build/release/CSVUtils",
+      "args": [],
+      "cwd": "${workspaceFolder:csv-utils}",
+      "preLaunchTask": "swift: Build Release CSVUtils"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Test CSVUtils",
+      "program": "/Applications/Xcode.app/Contents/Developer/usr/bin/xctest",
+      "args": [
+        ".build/debug/CSVUtilsPackageTests.xctest"
+      ],
+      "cwd": "${workspaceFolder:csv-utils}",
+      "preLaunchTask": "swift: Build All"
+    }
+  ]
+}
