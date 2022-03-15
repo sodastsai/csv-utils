@@ -11,7 +11,12 @@ let package = Package(
   products: [
     .executable(name: "CSVUtils", targets: ["CSVUtils"]),
   ],
+  dependencies: [
+    .package(url: "https://github.com/apple/swift-argument-parser", from: "1.0.0"),
+  ],
   targets: [
-    .executableTarget(name: "CSVUtils"),
+    .executableTarget(name: "CSVUtils", dependencies: [
+      .product(name: "ArgumentParser", package: "swift-argument-parser"),
+    ]),
   ]
 )
