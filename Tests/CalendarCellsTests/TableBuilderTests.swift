@@ -7,19 +7,19 @@ class TableBuilderTests: XCTestCase {
   // MARK: Headers
 
   func testHeadersWithStartingByMonday() {
-    let table = makeTable(calendar: makeCalendar(firstWeekday: 2))
+    let table = makeTable(from: Date(), to: Date(), calendar: makeCalendar(firstWeekday: 2))
     XCTAssertEqual(stringify(row: table.first ?? []),
                    ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
   }
 
   func testHeadersWithStartingBySaturday() {
-    let table = makeTable(calendar: makeCalendar(firstWeekday: 7))
+    let table = makeTable(from: Date(), to: Date(), calendar: makeCalendar(firstWeekday: 7))
     XCTAssertEqual(stringify(row: table.first ?? []),
                    ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"])
   }
 
   func testHeadersWithStartingByOtherDays() {
-    let table = makeTable(calendar: makeCalendar(firstWeekday: 4))
+    let table = makeTable(from: Date(), to: Date(), calendar: makeCalendar(firstWeekday: 4))
     XCTAssertEqual(stringify(row: table.first ?? []),
                    ["Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday"])
   }

@@ -9,9 +9,16 @@ struct TableBuilder {
 
   typealias Table = [Row]
 
+  let startDate: Date
+  let endDate: Date
   let calendar: Calendar
 
-  init(calendar: Calendar = .current, options: Options = .init()) {
+  init(from startDate: Date,
+       to endDate: Date,
+       calendar: Calendar = .current,
+       options: Options = .init()) {
+    self.startDate = startDate
+    self.endDate = endDate
     self.calendar = calendar
     self.options = options
   }
@@ -46,6 +53,11 @@ extension TableBuilder {
 
 // MARK: - Shortcut
 
-func makeTable(calendar: Calendar = .current, options: TableBuilder.Options = .init()) -> TableBuilder.Table {
-  TableBuilder(calendar: calendar, options: options).build()
+func makeTable(
+  from startDate: Date,
+  to endDate: Date,
+  calendar: Calendar = .current,
+  options: TableBuilder.Options = .init()
+) -> TableBuilder.Table {
+  TableBuilder(from: startDate, to: endDate, calendar: calendar, options: options).build()
 }
