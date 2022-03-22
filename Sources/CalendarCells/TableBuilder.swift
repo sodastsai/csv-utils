@@ -49,6 +49,25 @@ extension TableBuilder {
     }
     return table
   }
+
+  func weekday(of date: Date) -> Int {
+    calendar.component(.weekday, from: date)
+  }
+
+  var paddingSizeBeforeStartDate: Int {
+    mod(weekday(of: startDate) - calendar.firstWeekday,
+        by: calendar.weekdaySymbols.count)
+  }
+
+  var paddingSizeAfterEndDate: Int {
+    mod(calendar.firstWeekday - weekday(of: endDate) - 1,
+        by: calendar.weekdaySymbols.count)
+  }
+}
+
+private func mod<Value: BinaryInteger>(_ value: Value, by divisor: Value) -> Value {
+  let result = value % divisor
+  return result >= 0 ? result : result + divisor
 }
 
 // MARK: - Shortcut
