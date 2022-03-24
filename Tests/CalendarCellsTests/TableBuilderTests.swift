@@ -49,6 +49,21 @@ class TableBuilderTests: XCTestCase {
     XCTAssertEqual(tableGenerator.paddingSizeBeforeStartDate, 0)
     XCTAssertEqual(tableGenerator.paddingSizeAfterEndDate, 4)
   }
+
+  // MARK: Date cells
+
+  func testGeneratingDateCells() {
+    let tableGenerator = TableBuilder(from: Date(year: 2022, month: 3, day: 15),
+                                      to: Date(year: 2022, month: 4, day: 1),
+                                      calendar: makeCalendar(firstWeekday: 2))
+    XCTAssertEqual(stringify(table: tableGenerator.build()),
+                   [
+                     ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                     ["", "15", "16", "17", "18", "19", "20"],
+                     ["21", "22", "23", "24", "25", "26", "27"],
+                     ["28", "29", "30", "31", "1", "", ""],
+                   ])
+  }
 }
 
 // MARK: - Test Utils
@@ -72,5 +87,9 @@ private func stringify(cell: TableBuilder.Cell) -> String {
   switch cell {
   case let .header(header):
     return header
+  case .empty:
+    return ""
+  case let .date(date):
+    return date.formatted(.dateTime.day())
   }
 }

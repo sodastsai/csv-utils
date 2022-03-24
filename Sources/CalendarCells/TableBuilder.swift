@@ -3,6 +3,8 @@ import Foundation
 struct TableBuilder {
   enum Cell {
     case header(String)
+    case empty
+    case date(Date)
   }
 
   typealias Row = [Cell]
@@ -42,11 +44,16 @@ extension TableBuilder {
     return weekdays.map { .header($0) }
   }
 
+  var bodyRows: [Row] {
+    makeDateCells()
+  }
+
   func build() -> Table {
     var table = Table()
     if options.withHeader {
       table.append(headerRow)
     }
+    table.append(contentsOf: bodyRows)
     return table
   }
 
@@ -63,11 +70,32 @@ extension TableBuilder {
     mod(calendar.firstWeekday - weekday(of: endDate) - 1,
         by: calendar.weekdaySymbols.count)
   }
+
+  func makeDateCells() -> [Row] {
+    let weekdaysCount = calendar.weekdaySymbols.count
+    var rows = [Row()]
+    rows.lastRow += Array(repeating: .empty, count: paddingSizeBeforeStartDate)
+    for date in Date.generator(from: startDate, to: endDate) {
+      if rows.lastRow.count == weekdaysCount {
+        rows.append([])
+      }
+      rows.lastRow.append(.date(date))
+    }
+    rows.lastRow += Array(repeating: .empty, count: paddingSizeAfterEndDate)
+    return rows
+  }
 }
 
 private func mod<Value: BinaryInteger>(_ value: Value, by divisor: Value) -> Value {
   let result = value % divisor
   return result >= 0 ? result : result + divisor
+}
+
+extension TableBuilder.Table {
+  var lastRow: TableBuilder.Row {
+    get { self[endIndex - 1] }
+    set { self[endIndex - 1] = newValue }
+  }
 }
 
 // MARK: - Shortcut
