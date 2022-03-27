@@ -139,14 +139,14 @@ private func mod<Value: BinaryInteger>(_ value: Value, by divisor: Value) -> Val
   return result >= 0 ? result : result + divisor
 }
 
-extension TableBuilder.Table {
+private extension TableBuilder.Table {
   var lastRow: TableBuilder.Row {
     get { self[endIndex - 1] }
     set { self[endIndex - 1] = newValue }
   }
 }
 
-extension TableBuilder.Row {
+private extension TableBuilder.Row {
   var firstDate: Date? {
     for cell in self {
       if case let .date(date) = cell {
