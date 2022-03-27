@@ -64,6 +64,28 @@ class TableBuilderTests: XCTestCase {
                      ["28", "29", "30", "31", "1", "", ""],
                    ])
   }
+
+  // MARK: With Note Rows
+
+  func testWithNoteRows() {
+    let tableGenerator = TableBuilder(from: Date(year: 2022, month: 3, day: 15),
+                                      to: Date(year: 2022, month: 4, day: 1),
+                                      calendar: makeCalendar(firstWeekday: 2),
+                                      options: [.withHeader, .with(noteRows: 2)])
+    XCTAssertEqual(stringify(table: tableGenerator.build()),
+                   [
+                     ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                     ["", "15", "16", "17", "18", "19", "20"],
+                     ["", "", "", "", "", "", ""],
+                     ["", "", "", "", "", "", ""],
+                     ["21", "22", "23", "24", "25", "26", "27"],
+                     ["", "", "", "", "", "", ""],
+                     ["", "", "", "", "", "", ""],
+                     ["28", "29", "30", "31", "1", "", ""],
+                     ["", "", "", "", "", "", ""],
+                     ["", "", "", "", "", "", ""],
+                   ])
+  }
 }
 
 // MARK: - Test Utils

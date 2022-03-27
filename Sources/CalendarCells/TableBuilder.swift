@@ -45,7 +45,9 @@ extension TableBuilder {
   }
 
   var bodyRows: [Row] {
-    makeDateCells()
+    var bodyRows = makeDateCells()
+    bodyRows = appendNoteRows(to: bodyRows, rowsCount: options.numberOfNoteRows)
+    return bodyRows
   }
 
   func build() -> Table {
@@ -82,6 +84,23 @@ extension TableBuilder {
       rows.lastRow.append(.date(date))
     }
     rows.lastRow += Array(repeating: .empty, count: paddingSizeAfterEndDate)
+    return rows
+  }
+
+  func appendNoteRows(to dateCells: [Row], rowsCount: Int) -> [Row] {
+    guard rowsCount != 0 else {
+      return dateCells
+    }
+
+    var rows = [Row]()
+    let rowWidth = dateCells.map(\.count).min() ?? 0
+    let numberOfNoteRows = options.numberOfNoteRows
+    for dateRow in dateCells {
+      rows.append(dateRow)
+      for _ in 0 ..< numberOfNoteRows {
+        rows.append(Row(repeating: .empty, count: rowWidth))
+      }
+    }
     return rows
   }
 }
