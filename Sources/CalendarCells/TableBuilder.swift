@@ -18,7 +18,7 @@ struct TableBuilder {
   init(from startDate: Date,
        to endDate: Date,
        calendar: Calendar = .current,
-       options: Options = .init()) {
+       options: Options = .default) {
     self.startDate = startDate
     self.endDate = endDate
     self.calendar = calendar
@@ -27,11 +27,11 @@ struct TableBuilder {
 
   // MARK: Options
 
-  struct Options {
-    var withHeader = true
+  struct Options: OptionSet {
+    let rawValue: Int
   }
 
-  var options: Options
+  var options: Options = .default
 }
 
 // MARK: - Build Cells
@@ -50,7 +50,7 @@ extension TableBuilder {
 
   func build() -> Table {
     var table = Table()
-    if options.withHeader {
+    if options.contains(.withHeader) {
       table.append(headerRow)
     }
     table.append(contentsOf: bodyRows)
@@ -104,7 +104,7 @@ func makeTable(
   from startDate: Date,
   to endDate: Date,
   calendar: Calendar = .current,
-  options: TableBuilder.Options = .init()
+  options: TableBuilder.Options = .default
 ) -> TableBuilder.Table {
   TableBuilder(from: startDate, to: endDate, calendar: calendar, options: options).build()
 }
