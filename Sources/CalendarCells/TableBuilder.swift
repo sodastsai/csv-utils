@@ -38,15 +38,19 @@ struct TableBuilder {
 
 extension TableBuilder {
   var headerRow: Row {
-    let rawWeekdays = calendar.weekdaySymbols
-    let firstWeekdayIndex = calendar.firstWeekday - 1
-    let weekdays = rawWeekdays[firstWeekdayIndex...] + rawWeekdays[..<firstWeekdayIndex]
-    return weekdays.map { .header($0) }
+    var row = makeWeekdayCells()
+    if options.contains(.withMonthName) {
+      row.insert(.header("Month"), at: 0)
+    }
+    return row
   }
 
   var bodyRows: [Row] {
     var bodyRows = makeDateCells()
     bodyRows = appendNoteRows(to: bodyRows, rowsCount: options.numberOfNoteRows)
+    if options.contains(.withMonthName) {
+      bodyRows = appendMonthName(to: bodyRows)
+    }
     return bodyRows
   }
 
@@ -61,6 +65,10 @@ extension TableBuilder {
 
   func weekday(of date: Date) -> Int {
     calendar.component(.weekday, from: date)
+  }
+
+  func month(of date: Date) -> Int {
+    calendar.component(.month, from: date)
   }
 
   var paddingSizeBeforeStartDate: Int {
@@ -87,6 +95,13 @@ extension TableBuilder {
     return rows
   }
 
+  func makeWeekdayCells() -> [Cell] {
+    let rawWeekdays = calendar.weekdaySymbols
+    let firstWeekdayIndex = calendar.firstWeekday - 1
+    let weekdays = rawWeekdays[firstWeekdayIndex...] + rawWeekdays[..<firstWeekdayIndex]
+    return weekdays.map { .header($0) }
+  }
+
   func appendNoteRows(to dateCells: [Row], rowsCount: Int) -> [Row] {
     guard rowsCount != 0 else {
       return dateCells
@@ -103,6 +118,20 @@ extension TableBuilder {
     }
     return rows
   }
+
+  func appendMonthName(to dateCells: [Row]) -> [Row] {
+    var currentMonth: String?
+    return dateCells.map { dateRow in
+      guard
+        let monthOfRow = dateRow.firstMonth(using: calendar),
+        monthOfRow != currentMonth
+      else {
+        return [.empty] + dateRow
+      }
+      currentMonth = monthOfRow
+      return [.header(monthOfRow)] + dateRow
+    }
+  }
 }
 
 private func mod<Value: BinaryInteger>(_ value: Value, by divisor: Value) -> Value {
@@ -114,6 +143,23 @@ extension TableBuilder.Table {
   var lastRow: TableBuilder.Row {
     get { self[endIndex - 1] }
     set { self[endIndex - 1] = newValue }
+  }
+}
+
+extension TableBuilder.Row {
+  var firstDate: Date? {
+    for cell in self {
+      if case let .date(date) = cell {
+        return date
+      }
+    }
+    return nil
+  }
+
+  func firstMonth(using calendar: Calendar) -> String? {
+    guard let firstDate = firstDate else { return nil }
+    let monthIndex = calendar.component(.month, from: firstDate) - 1
+    return calendar.monthSymbols[monthIndex]
   }
 }
 

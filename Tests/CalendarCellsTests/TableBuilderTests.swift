@@ -10,9 +10,9 @@ class TableBuilderTests: XCTestCase {
     let table = makeTable(from: Date(),
                           to: Date(),
                           calendar: makeCalendar(firstWeekday: 2),
-                          options: [.withHeader])
+                          options: [.withHeader, .withMonthName])
     XCTAssertEqual(stringify(row: table.first ?? []),
-                   ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
+                   ["Month", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
   }
 
   func testHeadersWithStartingBySaturday() {
@@ -94,6 +94,29 @@ class TableBuilderTests: XCTestCase {
                      ["28", "29", "30", "31", "1", "", ""],
                      ["", "", "", "", "", "", ""],
                      ["", "", "", "", "", "", ""],
+                   ])
+  }
+
+  func testWithNoteRowsAndMonthName() {
+    let tableGenerator = TableBuilder(from: Date(year: 2022, month: 3, day: 23),
+                                      to: Date(year: 2022, month: 4, day: 13),
+                                      calendar: makeCalendar(firstWeekday: 2),
+                                      options: [.withHeader, .withMonthName, .with(noteRows: 2)])
+    XCTAssertEqual(stringify(table: tableGenerator.build()),
+                   [
+                     ["Month", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                     ["March", "", "", "23", "24", "25", "26", "27"],
+                     ["", "", "", "", "", "", "", ""],
+                     ["", "", "", "", "", "", "", ""],
+                     ["", "28", "29", "30", "31", "1", "2", "3"],
+                     ["", "", "", "", "", "", "", ""],
+                     ["", "", "", "", "", "", "", ""],
+                     ["April", "4", "5", "6", "7", "8", "9", "10"],
+                     ["", "", "", "", "", "", "", ""],
+                     ["", "", "", "", "", "", "", ""],
+                     ["", "11", "12", "13", "", "", "", ""],
+                     ["", "", "", "", "", "", "", ""],
+                     ["", "", "", "", "", "", "", ""],
                    ])
   }
 }
