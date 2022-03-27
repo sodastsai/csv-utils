@@ -46,7 +46,7 @@ extension TableBuilder {
   }
 
   var bodyRows: [Row] {
-    var bodyRows = makeDateCells()
+    var bodyRows = makeDateRows()
     bodyRows = appendNoteRows(to: bodyRows, rowsCount: options.numberOfNoteRows)
     if options.contains(.withMonthName) {
       bodyRows = appendMonthName(to: bodyRows)
@@ -81,7 +81,7 @@ extension TableBuilder {
         by: calendar.weekdaySymbols.count)
   }
 
-  func makeDateCells() -> [Row] {
+  func makeDateRows() -> [Row] {
     let weekdaysCount = calendar.weekdaySymbols.count
     var rows = [Row()]
     rows.lastRow += Array(repeating: .empty, count: paddingSizeBeforeStartDate)
@@ -102,15 +102,15 @@ extension TableBuilder {
     return weekdays.map { .header($0) }
   }
 
-  func appendNoteRows(to dateCells: [Row], rowsCount: Int) -> [Row] {
+  func appendNoteRows(to dateRows: [Row], rowsCount: Int) -> [Row] {
     guard rowsCount != 0 else {
-      return dateCells
+      return dateRows
     }
 
     var rows = [Row]()
-    let rowWidth = dateCells.map(\.count).min() ?? 0
+    let rowWidth = dateRows.map(\.count).min() ?? 0
     let numberOfNoteRows = options.numberOfNoteRows
-    for dateRow in dateCells {
+    for dateRow in dateRows {
       rows.append(dateRow)
       for _ in 0 ..< numberOfNoteRows {
         rows.append(Row(repeating: .empty, count: rowWidth))
@@ -119,9 +119,9 @@ extension TableBuilder {
     return rows
   }
 
-  func appendMonthName(to dateCells: [Row]) -> [Row] {
+  func appendMonthName(to rows: [Row]) -> [Row] {
     var currentMonth: String?
-    return dateCells.map { dateRow in
+    return rows.map { dateRow in
       guard
         let monthOfRow = dateRow.firstMonth(using: calendar),
         monthOfRow != currentMonth
