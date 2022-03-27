@@ -2,6 +2,7 @@
 
 extension TableBuilder.Options {
   static let withHeader = Self(as: .withHeader)
+  static let withMonthName = Self(as: .withMonthName)
 
   static func with(noteRows: UInt8) -> Self {
     Self(rawValue: Int(noteRows) << ValueShiftOffset.noteRowsLowerBound.rawValue)
@@ -11,6 +12,7 @@ extension TableBuilder.Options {
 extension TableBuilder.Options {
   static let `default`: Self = [
     .withHeader,
+    .withMonthName,
   ]
 }
 
@@ -27,6 +29,7 @@ extension TableBuilder.Options {
 private extension TableBuilder.Options {
   enum ValueShiftOffset: Int {
     case withHeader = 0
+    case withMonthName
     case noteRowsLowerBound
   }
 

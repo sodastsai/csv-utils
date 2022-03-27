@@ -7,19 +7,28 @@ class TableBuilderTests: XCTestCase {
   // MARK: Headers
 
   func testHeadersWithStartingByMonday() {
-    let table = makeTable(from: Date(), to: Date(), calendar: makeCalendar(firstWeekday: 2))
+    let table = makeTable(from: Date(),
+                          to: Date(),
+                          calendar: makeCalendar(firstWeekday: 2),
+                          options: [.withHeader])
     XCTAssertEqual(stringify(row: table.first ?? []),
                    ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"])
   }
 
   func testHeadersWithStartingBySaturday() {
-    let table = makeTable(from: Date(), to: Date(), calendar: makeCalendar(firstWeekday: 7))
+    let table = makeTable(from: Date(),
+                          to: Date(),
+                          calendar: makeCalendar(firstWeekday: 7),
+                          options: [.withHeader])
     XCTAssertEqual(stringify(row: table.first ?? []),
                    ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"])
   }
 
   func testHeadersWithStartingByOtherDays() {
-    let table = makeTable(from: Date(), to: Date(), calendar: makeCalendar(firstWeekday: 4))
+    let table = makeTable(from: Date(),
+                          to: Date(),
+                          calendar: makeCalendar(firstWeekday: 4),
+                          options: [.withHeader])
     XCTAssertEqual(stringify(row: table.first ?? []),
                    ["Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Monday", "Tuesday"])
   }
@@ -55,7 +64,8 @@ class TableBuilderTests: XCTestCase {
   func testGeneratingDateCells() {
     let tableGenerator = TableBuilder(from: Date(year: 2022, month: 3, day: 15),
                                       to: Date(year: 2022, month: 4, day: 1),
-                                      calendar: makeCalendar(firstWeekday: 2))
+                                      calendar: makeCalendar(firstWeekday: 2),
+                                      options: [.withHeader])
     XCTAssertEqual(stringify(table: tableGenerator.build()),
                    [
                      ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
