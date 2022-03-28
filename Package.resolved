@@ -1,23 +1,25 @@
 {
-  "pins" : [
-    {
-      "identity" : "csv.swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/yaslab/CSV.swift.git",
-      "state" : {
-        "revision" : "81d2874c51db364d7e1d71b0d99018a294c87ac1",
-        "version" : "2.4.3"
+  "object": {
+    "pins": [
+      {
+        "package": "CSV.swift",
+        "repositoryURL": "https://github.com/yaslab/CSV.swift.git",
+        "state": {
+          "branch": null,
+          "revision": "81d2874c51db364d7e1d71b0d99018a294c87ac1",
+          "version": "2.4.3"
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "state": {
+          "branch": null,
+          "revision": "82905286cc3f0fa8adc4674bf49437cab65a8373",
+          "version": "1.1.1"
+        }
       }
-    },
-    {
-      "identity" : "swift-argument-parser",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-argument-parser",
-      "state" : {
-        "revision" : "554e7659eb5b4dff97158d531aabecf11d546e2d",
-        "version" : "1.1.0"
-      }
-    }
-  ],
-  "version" : 2
+    ]
+  },
+  "version": 1
 }
