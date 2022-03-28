@@ -1,3 +1,4 @@
+import CSV
 import Foundation
 
 struct TableBuilder {
@@ -165,4 +166,42 @@ func makeTable(
   options: TableBuilder.Options = .default
 ) -> TableBuilder.Table {
   TableBuilder(from: startDate, to: endDate, calendar: calendar, options: options).build()
+}
+
+// MARK: - I/O
+
+extension TableBuilder.Cell {
+  var csvString: String {
+    switch self {
+    case .empty:
+      return ""
+    case let .header(header):
+      return header
+    case let .date(date):
+      return date.formatted(.dateTime.day())
+    }
+  }
+}
+
+extension TableBuilder.Table {
+  enum CSVError: Error {
+    case failedToGetCSVData
+    case failedToConvertDataToString
+  }
+
+  func toCSVString() throws -> String {
+    let csvWriter = try CSVWriter(stream: .toMemory())
+    try forEach { row in
+      try csvWriter.write(row: row.map(\.csvString))
+    }
+    guard
+      let csvData = csvWriter.stream.property(forKey: .dataWrittenToMemoryStreamKey) as? Data
+    else {
+      throw CSVError.failedToGetCSVData
+    }
+    guard let csvString = String(data: csvData, encoding: .utf8) else {
+      throw CSVError.failedToConvertDataToString
+    }
+    return csvString
+  }
 }

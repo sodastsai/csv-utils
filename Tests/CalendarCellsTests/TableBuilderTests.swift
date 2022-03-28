@@ -119,6 +119,25 @@ class TableBuilderTests: XCTestCase {
                      ["", "", "", "", "", "", "", ""],
                    ])
   }
+
+  // MARK: CSV
+
+  func testCSVString() throws {
+    let tableGenerator = TableBuilder(from: Date(year: 2022, month: 3, day: 23),
+                                      to: Date(year: 2022, month: 4, day: 5),
+                                      calendar: makeCalendar(firstWeekday: 2),
+                                      options: [.withHeader, .withMonthName, .withNoteRows(1)])
+    XCTAssertEqual(try tableGenerator.build().toCSVString(),
+                   """
+                   Month,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday
+                   March,,,23,24,25,26,27
+                   ,,,,,,,
+                   ,28,29,30,31,1,2,3
+                   ,,,,,,,
+                   April,4,5,,,,,
+                   ,,,,,,,
+                   """)
+  }
 }
 
 // MARK: - Test Utils
