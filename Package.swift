@@ -18,6 +18,7 @@ let package = Package(
   targets: [
     .executableTarget(name: "CSVUtils", dependencies: [
       .product(name: "ArgumentParser", package: "swift-argument-parser"),
+      .target(name: "CalendarCells"),
     ]),
     .target(name: "CalendarCells",
             dependencies: [
