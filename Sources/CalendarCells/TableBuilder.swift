@@ -14,6 +14,7 @@ struct TableBuilder {
   let startDate: Date
   let endDate: Date
   let calendar: Calendar
+  var options: Options = .default
 
   init(from startDate: Date,
        to endDate: Date,
@@ -24,14 +25,6 @@ struct TableBuilder {
     self.calendar = calendar
     self.options = options
   }
-
-  // MARK: Options
-
-  struct Options: OptionSet {
-    let rawValue: Int
-  }
-
-  var options: Options = .default
 }
 
 // MARK: - Build Cells

@@ -81,7 +81,7 @@ class TableBuilderTests: XCTestCase {
     let tableGenerator = TableBuilder(from: Date(year: 2022, month: 3, day: 15),
                                       to: Date(year: 2022, month: 4, day: 1),
                                       calendar: makeCalendar(firstWeekday: 2),
-                                      options: [.withHeader, .with(noteRows: 2)])
+                                      options: [.withHeader, .withNoteRows(2)])
     XCTAssertEqual(stringify(table: tableGenerator.build()),
                    [
                      ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
@@ -101,7 +101,7 @@ class TableBuilderTests: XCTestCase {
     let tableGenerator = TableBuilder(from: Date(year: 2022, month: 3, day: 23),
                                       to: Date(year: 2022, month: 4, day: 13),
                                       calendar: makeCalendar(firstWeekday: 2),
-                                      options: [.withHeader, .withMonthName, .with(noteRows: 2)])
+                                      options: [.withHeader, .withMonthName, .withNoteRows(2)])
     XCTAssertEqual(stringify(table: tableGenerator.build()),
                    [
                      ["Month", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
